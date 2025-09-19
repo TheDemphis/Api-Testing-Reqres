@@ -4,7 +4,7 @@ API Testing Project – ReqRes
 Testai sukurti siekiant patikrinti įvairius endpoint’us, jų atsakymus.
 
 Testuojama buvo:
-GET užklausos – vartotojų ir resursų sąrašai, pavieniai įrašai.
+GET užklausos – vartotojų ir resursų gaunami duomenys, pavieniai įrašai.
 POST užklausos – vartotojo kūrimas, registracija, prisijungimas.
 PUT/PATCH užklausos – vartotojo atnaujinimas.
 DELETE užklausa – vartotojo ištrynimas.
