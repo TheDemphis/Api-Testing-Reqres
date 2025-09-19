@@ -25,3 +25,4 @@ Newman / JavaScript testai (automatiniam paleidimui ir validacijoms).
 Projekto struktūra:
 tests/API Testing Project – ReqRes.json – testų kolekcija.
 README.md – projekto aprašymas.
+Screenshots/APITestavimas - visų testų run'as
