@@ -1,0 +1,780 @@
+{
+	"info": {
+		"_postman_id": "4a9fd2da-dcc3-441a-a789-f89c4baca39a",
+		"name": "reqres-api-practice.postman_collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45960828",
+		"_collection_link": "https://danielius-4282623.postman.co/workspace/8a4b2c76-cc86-48f8-8221-b46abe8518a9/collection/45960828-4a9fd2da-dcc3-441a-a789-f89c4baca39a?action=share&source=collection_link&creator=45960828"
+	},
+	"item": [
+		{
+			"name": "List of Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200',function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test('Response time is less than 1000ms',function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000)\r",
+							"})\r",
+							"pm.test('Response headers contain JSON',function(){\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json')\r",
+							"})\r",
+							"pm.test('Data has 6 items per page',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData.data).to.have.length(6)\r",
+							"})\r",
+							"pm.test('User in a list has an email with correct value',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData.data[0].email).to.eql('michael.lawson@reqres.in')\r",
+							"})\r",
+							"pm.test('Each user contains an email',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    jsonData.data.forEach((user)=>{\r",
+							"        pm.expect(user).to.have.property('email')\r",
+							"    })\r",
+							"})\r",
+							"pm.test('Each user email ends with correct reqres.in value',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    jsonData.data.forEach((user)=>{\r",
+							"        pm.expect(user.email).to.match(/@reqres\\.in$/)\r",
+							"    })\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/users?page=2",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status is 201',function(){\r",
+							"    pm.response.to.have.status(201)\r",
+							"})\r",
+							"pm.test('Response time is less than 500ms',function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500)\r",
+							"})\r",
+							"pm.test('User is created with correct name,id values',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData.name).to.eql('Danielius')\r",
+							"    pm.expect(jsonData).to.ownProperty('id')\r",
+							"})\r",
+							"pm.test('Response has a property of createdAt',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData).to.ownProperty('createdAt')\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Danielius\",\r\n    \"job\": \"QA\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/users",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response has a correct status of 200',function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test('Response time is less than 400',function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400)\r",
+							"})\r",
+							"pm.test('Response headers contain JSON',function(){\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json')\r",
+							"})\r",
+							"pm.test('Values are updated correctly after PUT request',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData.job).to.eql('QA automation engineer')\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"DanieliusDrevinskas\",\r\n    \"job\": \"QA automation engineer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/users/2",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status is 204',function(){\r",
+							"    pm.response.to.have.status(204)\r",
+							"})\r",
+							"pm.test('Response time is less than 400',function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400)\r",
+							"})\r",
+							"pm.test('User is deleted correctly after request',function(){\r",
+							"    pm.expect(pm.response.text().trim()).to.eql('')\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/users/2",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status is 200',function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test('Response headers contains JSON',function(){\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json')\r",
+							"})\r",
+							"pm.test('Values are updated correctly after UPDATE request',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData.job).to.eql('Junior QA automation engineer')\r",
+							"})\r",
+							"pm.test('Response object has a property of updatedAt',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData).to.ownProperty('updatedAt')\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Danielius\",\r\n    \"job\": \"Junior QA automation engineer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/users/2",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Single User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200',function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test('User contains an ID = 2',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData.data.id).to.eql(2)\r",
+							"})\r",
+							"pm.test('User contains an email with correct value',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData.data.email).to.eql(\"janet.weaver@reqres.in\")\r",
+							"})\r",
+							"pm.test('User email ends with correct value',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData.data.email).to.match(/@reqres\\.in$/)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/api/users/2",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Single User Not Found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 404',function(){\r",
+							"    pm.response.to.have.status(404)\r",
+							"})\r",
+							"pm.test('Response time is less than 500',function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500)\r",
+							"})\r",
+							"pm.test('Response body is empty',function(){\r",
+							"    const data = pm.response.json()\r",
+							"    pm.expect(data).to.eql({})\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/users/23",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"23"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List of Resources",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status is 200',function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test('Resource list is not empty',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData.data.length).to.be.above(0)\r",
+							"})\r",
+							"pm.test('Data has a length of 6', function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData.data).to.have.length(6)\r",
+							"})\r",
+							"pm.test('Object contains values of ID,name,year',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData.data[2].id).to.eql(3)\r",
+							"    pm.expect(jsonData.data[2].name).to.eql('true red')\r",
+							"    pm.expect(jsonData.data[2].year).to.eql(2002)\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/unknown",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"unknown"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Single Resource",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200',function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test('Response is not empty',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(Object.keys(jsonData.data).length).to.be.above(0)\r",
+							"})\r",
+							"pm.test('Response ID = 2',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData.data.id).to.eql(2)\r",
+							"})\r",
+							"pm.test(\"Response with ID = 2 has a name property with value 'fuchsia rose'\",function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData.data.name).to.eql('fuchsia rose')\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/api/unknown/2",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"unknown",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signle Resource Not Found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status is 204',function(){\r",
+							"    pm.response.to.have.status(404)\r",
+							"})\r",
+							"pm.test('Response body is empty',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData).to.eql({})\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/api/unknown/23",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"unknown",
+						"23"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register - Successful",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status is 200',function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test('Response headers contain JSON',function(){\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json')\r",
+							"})\r",
+							"pm.test('Created user has ID, token values',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData).to.ownProperty('id')\r",
+							"    pm.expect(jsonData).to.ownProperty('token')\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"Example123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/register",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register - Unsuccessful",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response has a status of 400',function(){\r",
+							"    pm.response.to.have.status(400)\r",
+							"})\r",
+							"pm.test(\"Response has an error message of 'Missing password'\",function(){\r",
+							"    const data = pm.response.json()\r",
+							"    pm.expect(data.error).to.eql('Missing password')\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"sydney@fife\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/register",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login - Successful",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response has a status of 200',function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test('Response header contains JSON',function(){\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/json')\r",
+							"})\r",
+							"pm.test('Response has a property token',function(){\r",
+							"    const data = pm.response.json()\r",
+							"    pm.expect(data).to.ownProperty('token')\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"cityslicka\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login - Unsuccessful",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response has a status of 400',function(){\r",
+							"    pm.response.to.have.status(400)\r",
+							"})\r",
+							"pm.test(\"Response has an error message which is 'Missing password'\",function(){\r",
+							"    const data = pm.response.json()\r",
+							"    pm.expect(data.error).to.eql('Missing password')\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"peter@klaven\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/login",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delayed login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response has a status of 200',function(){\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test('Data contains array of 6 objects and the first object has a property of email',function(){\r",
+							"    const jsonData = pm.response.json()\r",
+							"    pm.expect(jsonData.data).to.have.length(6)\r",
+							"    pm.expect(jsonData.data[0]).to.ownProperty('email')\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/users?delay=3",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "delay",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "reqres-free-v1",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "x-api-key",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://reqres.in",
+			"type": "default"
+		}
+	]
+}
