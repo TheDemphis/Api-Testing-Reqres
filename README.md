@@ -23,5 +23,5 @@ Postman (rankiniam testavimui ir kolekcijų sudarymui).
 Newman / JavaScript testai (automatiniam paleidimui ir validacijoms).
 
 Projekto struktūra:
-tests/ – testų kolekcija.
+tests/API Testing Project – ReqRes.json – testų kolekcija.
 README.md – projekto aprašymas.
